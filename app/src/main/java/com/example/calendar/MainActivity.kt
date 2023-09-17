@@ -3,10 +3,13 @@ package com.example.calendar
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -18,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,14 +57,26 @@ fun CalendarApp() {
     ) {
         CalendarHeader(time)
         CalendarHeaderBtn(time)
+        CalendarDayName()
     }
+}
+
+@Composable
+fun CalendarHeader(date: MutableState<Calendar>) {
+    // yyyy년 MM월
+    val resultTime = SimpleDateFormat("yyyy년 MM월", Locale.KOREA).format(date.value.time)
+
+    Text(
+        text = resultTime,
+        fontSize = 30.sp
+    )
 }
 
 @Composable
 fun CalendarHeaderBtn(date: MutableState<Calendar>) {
     Row(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(top = 30.dp, bottom = 30.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -101,14 +117,23 @@ fun CalendarHeaderBtn(date: MutableState<Calendar>) {
 }
 
 @Composable
-fun CalendarHeader(date: MutableState<Calendar>) {
-    // yyyy년 MM월
-    val resultTime = SimpleDateFormat("yyyy년 MM월", Locale.KOREA).format(date.value.time)
+fun CalendarDayName() {
+    val nameList = listOf("일", "월", "화", "수", "목", "금", "토")
 
-    Text(
-        text = resultTime,
-        fontSize = 30.sp
-    )
+    Row() {
+        nameList.forEach {
+            Box(
+                modifier = Modifier.weight(1f),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = it,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.ExtraBold
+                )
+            }
+        }
+    }
 }
 
 @Preview(showBackground = true)
